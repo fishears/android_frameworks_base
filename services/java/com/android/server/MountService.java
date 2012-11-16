@@ -185,7 +185,6 @@ class MountService extends IMountService.Stub
     private boolean                               mSendUmsConnectedOnBoot = false;
     // true if we should fake MEDIA_MOUNTED state for external storage
     private boolean                               mEmulateExternalStorage = false;
-    private boolean                               mUmsSupported = false;
 
     /**
      * Private hash of currently mounted secure containers.
@@ -1153,7 +1152,6 @@ class MountService extends IMountService.Stub
                             mVolumes.add(volume);
                         }
                         mVolumeMap.put(pathString, volume);
-                        mUmsSupported |= allowMassStorage;
                     }
                     a.recycle();
                 }
@@ -1195,8 +1193,8 @@ class MountService extends IMountService.Stub
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_BOOT_COMPLETED);
-        // don't bother monitoring USB if mass storage is not supported
-        if (mUmsSupported) {
+        // don't bother monitoring USB if mass storage is not supported on our primary volume
+        if (mPrimaryVolume != null && mPrimaryVolume.allowMassStorage()) {
             filter.addAction(UsbManager.ACTION_USB_STATE);
         }
         mContext.registerReceiver(mBroadcastReceiver, filter, null, null);
