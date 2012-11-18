@@ -555,7 +555,7 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
             }
         }
 //        boolean recent_kill_all_button = Settings.System.getInt(mContext.getContentResolver(),
-        boolean recent_kill_all_button = true;
+//        boolean recent_kill_all_button = true;
 //                      Settings.System.RECENT_KILL_ALL_BUTTON, 0) == 1;
 
         mRecentsKillAllButton = (Button) findViewById(R.id.recents_kill_all_button);
