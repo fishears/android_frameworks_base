@@ -2044,6 +2044,7 @@ public final class Settings {
          */
         public static final Uri DEFAULT_RINGTONE_URI = getUriFor(RINGTONE);
 
+
         /**
          * Persistent store for the system-wide default notification sound.
          *
@@ -2835,6 +2836,7 @@ public final class Settings {
          */
         public static final String STATUS_BAR_NOTIF_COUNT = "status_bar_notif_count";
 
+
         /**
          * Show the pending notification counts as overlays on the status bar
          * @hide
@@ -3281,6 +3283,9 @@ public final class Settings {
         @Deprecated
         public static final String WIFI_WATCHDOG_PING_TIMEOUT_MS =
             Secure.WIFI_WATCHDOG_PING_TIMEOUT_MS;
+
+
+
     }
 
     /**
@@ -4767,7 +4772,6 @@ public final class Settings {
          * @hide
          */
         public static final String SCREENSAVER_DEFAULT_COMPONENT = "screensaver_default_component";
-
         /**
          * Whether to allow killing of the foreground app by long-pressing the Back button
          * @hide
