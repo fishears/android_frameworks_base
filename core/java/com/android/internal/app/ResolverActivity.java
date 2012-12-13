@@ -38,7 +38,6 @@ import android.os.PatternMatcher;
 import android.os.Process;
 import android.os.RemoteException;
 import android.os.UserHandle;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +48,6 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -73,8 +71,8 @@ public class ResolverActivity extends AlertActivity implements AdapterView.OnIte
     private boolean mAlwaysUseOption;
     private boolean mShowExtended;
     private GridView mGrid;
-    private RadioButton mAlwaysButton;
-    private RadioButton mOnceButton;
+    private Button mAlwaysButton;
+    private Button mOnceButton;
     private int mIconDpi;
     private int mIconSize;
     private int mMaxColumns;
@@ -167,8 +165,8 @@ public class ResolverActivity extends AlertActivity implements AdapterView.OnIte
             final ViewGroup buttonLayout = (ViewGroup) findViewById(R.id.button_bar);
             if (buttonLayout != null) {
                 buttonLayout.setVisibility(View.VISIBLE);
-                mAlwaysButton = (RadioButton) buttonLayout.findViewById(R.id.button_always);
-                mOnceButton = (RadioButton) buttonLayout.findViewById(R.id.button_once);
+                mAlwaysButton = (Button) buttonLayout.findViewById(R.id.button_always);
+                mOnceButton = (Button) buttonLayout.findViewById(R.id.button_once);
             } else {
                 mAlwaysUseOption = false;
             }
@@ -251,6 +249,8 @@ public class ResolverActivity extends AlertActivity implements AdapterView.OnIte
             final int checkedPos = mGrid.getCheckedItemPosition();
             final boolean enabled = checkedPos != GridView.INVALID_POSITION;
             mLastSelected = checkedPos;
+            mAlwaysButton.setEnabled(enabled);
+            mOnceButton.setEnabled(enabled);
             if (enabled) {
                 mGrid.setSelection(checkedPos);
             }
@@ -262,13 +262,21 @@ public class ResolverActivity extends AlertActivity implements AdapterView.OnIte
         final int checkedPos = mGrid.getCheckedItemPosition();
         final boolean hasValidSelection = checkedPos != GridView.INVALID_POSITION;
         if (mAlwaysUseOption && (!hasValidSelection || mLastSelected != checkedPos)) {
-           if (hasValidSelection) {
-               startSelected(position, mAlwaysButton.isChecked());
+            mAlwaysButton.setEnabled(hasValidSelection);
+            mOnceButton.setEnabled(hasValidSelection);
+            if (hasValidSelection) {
+                mGrid.smoothScrollToPosition(checkedPos);
             }
             mLastSelected = checkedPos;
         } else {
-            startSelected(position, mAlwaysButton.isChecked());
+            startSelected(position, false);
         }
+    }
+
+    public void onButtonClick(View v) {
+        final int id = v.getId();
+        startSelected(mGrid.getCheckedItemPosition(), id == R.id.button_always);
+        dismiss();
     }
 
     void startSelected(int which, boolean always) {
