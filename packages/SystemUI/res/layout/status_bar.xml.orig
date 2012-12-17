@@ -69,7 +69,7 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"/>  
+                android:orientation="horizontal"/>
         </LinearLayout>
 
         <LinearLayout android:id="@+id/system_icon_area"
@@ -77,7 +77,7 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-           <LinearLayout android:id="@+id/statusIcons"
+            <LinearLayout android:id="@+id/statusIcons"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
@@ -135,8 +135,15 @@
                 android:layout_height="match_parent"
                 android:singleLine="true"
                 android:paddingLeft="6dip"
+<<<<<<< HEAD
+                android:gravity="center_vertical|left"
+                android:clickable="false"
+                />
+=======
                 android:visibility="gone"
                 android:gravity="center_vertical|left" />
+
+>>>>>>> 00f0568... Add clock styles and Clock color picker
         </LinearLayout>
     </LinearLayout>
 

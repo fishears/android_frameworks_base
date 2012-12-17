@@ -2661,14 +2661,12 @@ public final class Settings {
          */
         public static final String EXPANDED_HIDE_SCROLLBAR = "expanded_hide_scrollbar";
 
-
         /**
          * Haptic feedback in power widget
          *
          * @hide
          */
         public static final String EXPANDED_HAPTIC_FEEDBACK = "expanded_haptic_feedback";
-
 
         /**
          * Widget Buttons to Use
@@ -2702,7 +2700,6 @@ public final class Settings {
         * @hide
         */
         public static final String EXPANDED_NETWORK_MODE = "expanded_network_mode";
-
 
         /**
         * Notification Power Widget - Custom Screen Timeout
@@ -2766,7 +2763,6 @@ public final class Settings {
          * @hide
          */
         public static final String VOLUME_ADJUST_SOUNDS_ENABLED = "volume_adjust_sounds_enabled";
-
         /**
          * Whether to show the signal text or signal bars.
          * default: 0
@@ -2776,7 +2772,53 @@ public final class Settings {
          * @hide
          */
         public static final String STATUS_BAR_SIGNAL_TEXT = "status_bar_signal";
+        /**
+         * AM/PM Style for clock options
+         * 0 - Normal AM/PM
+         * 1 - Small AM/PM
+         * 2 - No AM/PM
+         * @hide
+         */
+        public static final String STATUSBAR_CLOCK_AM_PM_STYLE = "statusbar_clock_am_pm_style";
 
+        /**
+         * Style of clock
+         * 0 - Hide Clock
+         * 1 - Right Clock
+         * 2 - Center Clock
+         * @hide
+         */
+        public static final String STATUSBAR_CLOCK_STYLE = "statusbar_clock_style";
+
+        /**
+         * Setting for clock color
+         * @hide
+         */
+        public static final String STATUSBAR_CLOCK_COLOR = "statusbar_clock_color";
+
+        /**
+        * @hide
+        * Shows custom date before clock time
+        * 0 - No Date
+        * 1 - Small Date
+        * 2 - Normal Date
+        */
+        public static final String STATUSBAR_CLOCK_DATE_DISPLAY = "statusbar_clock_date_display";
+
+        /**
+        * @hide
+        * Sets the date string style
+        * 0 - Regular style
+        * 1 - Lowercase
+        * 2 - Uppercase
+        */
+        public static final String STATUSBAR_CLOCK_DATE_STYLE = "statusbar_clock_date_style";
+
+        /**
+        * @hide
+        * Stores the java DateFormat string for the date
+        */
+        public static final String STATUSBAR_CLOCK_DATE_FORMAT = "statusbar_clock_date_format";
 
          /**
          * Whether to control brightness from status bar
@@ -2803,7 +2845,6 @@ public final class Settings {
          * @hide
          */
         public static final String EXPANDED_DESKTOP_STATE = "expanded_desktop_state";
-
        /**
         * Whether fcharge is enabled or not if kernel supports it
         * @hide
@@ -2861,6 +2902,7 @@ public final class Settings {
          * @hide
          */
         public static final String VOLBTN_MUSIC_CONTROLS = "volbtn_music_controls";
+
         /**
          * Whether or not to launch default music player when headset is connected
          * @hide
@@ -2920,7 +2962,6 @@ public final class Settings {
          * @hide
          */
         public static final String LOCKSCREEN_BACKGROUND = "lockscreen_background";
-
 
          /**
          * Action for long-pressing back button on lock screen
@@ -3000,12 +3041,12 @@ public final class Settings {
          */
         public static final String POWER_MENU_SOUND_ENABLED = "power_menu_silent_enabled";
 
-
         /**
          * Whether to unlock the screen with the home key.  The value is boolean (1 or 0).
          * @hide
          */
         public static final String HOME_UNLOCK_SCREEN = "home_unlock_screen";
+
         /**
  	 * Whether to display high end graphics effects disabled on older devices
  	 * @hide
@@ -3017,7 +3058,6 @@ public final class Settings {
          * @hide
          */
         public static final String LOCKSCREEN_VIBRATE_ENABLED = "lockscreen.vibrate_enabled";
-
 
         /**
          * Show the pending notification counts as overlays on the status bar
@@ -3060,6 +3100,7 @@ public final class Settings {
           * @hide
           */
          public static final String KEY_ASSIST_ACTION = "key_assist_action";
+
         /**
          * Weather to minimize lockscreen challenge on screen turned on
          * @hide
@@ -3421,8 +3462,6 @@ public final class Settings {
         @Deprecated
         public static final String WIFI_WATCHDOG_PING_TIMEOUT_MS =
             Secure.WIFI_WATCHDOG_PING_TIMEOUT_MS;
-
-
     }
 
     /**
@@ -4874,6 +4913,7 @@ public final class Settings {
          */
         public static final int INCALL_POWER_BUTTON_BEHAVIOR_DEFAULT =
                 INCALL_POWER_BUTTON_BEHAVIOR_SCREEN_OFF;
+
         /**
          * What happens when the user presses the Home button when the
          * phone is ringing.<br/>
@@ -5699,7 +5739,6 @@ public final class Settings {
         * @hide
         */
        public static final String WIFI_COUNTRY_CODE = "wifi_country_code";
-
 
        /**
         * The interval in milliseconds to issue wake up scans when wifi needs
