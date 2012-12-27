@@ -27,6 +27,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 import com.android.systemui.R;
+import android.provider.Settings;
 
 public class PhoneStatusBarView extends PanelBar {
     private static final String TAG = "PhoneStatusBarView";
@@ -42,6 +43,7 @@ public class PhoneStatusBarView extends PanelBar {
     PanelView mLastFullyOpenedPanel = null;
     PanelView mNotificationPanel, mSettingsPanel;
     private boolean mShouldFade;
+    private boolean mHighEndGfx;
 
     public PhoneStatusBarView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -191,11 +193,15 @@ public class PhoneStatusBarView extends PanelBar {
     public void panelExpansionChanged(PanelView panel, float frac) {
         super.panelExpansionChanged(panel, frac);
 
+        mHighEndGfx = Settings.System.getInt(mContext.getContentResolver(),
+		Settings.System.HIGH_END_GFX_ENABLED, 0) != 0;
+
         if (DEBUG) {
             Slog.v(TAG, "panelExpansionChanged: f=" + frac);
         }
 
-        if (panel == mFadingPanel && mScrimColor != 0 && ActivityManager.isHighEndGfx()) {
+        if (panel == mFadingPanel && mScrimColor != 0 && ActivityManager.isHighEndGfx() ||
+		(panel == mFadingPanel && mScrimColor != 0 && mHighEndGfx)) {
             if (mShouldFade) {
                 frac = mPanelExpandedFractionSum; // don't judge me
                 // let's start this 20% of the way down the screen
