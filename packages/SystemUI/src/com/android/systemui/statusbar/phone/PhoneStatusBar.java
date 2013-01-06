@@ -879,11 +879,7 @@ public class PhoneStatusBar extends BaseStatusBar {
 
     private void prepareNavigationBarView() {
         mNavigationBarView.reorient();
-
-        mNavigationBarView.getRecentsButton().setOnClickListener(mRecentsClickListener);
-        mNavigationBarView.getRecentsButton().setOnTouchListener(mRecentsPreloadOnTouchListener);
-        mNavigationBarView.getHomeButton().setOnTouchListener(mHomeSearchActionListener);
-        mNavigationBarView.getSearchLight().setOnTouchListener(mHomeSearchActionListener);
+        mNavigationBarView.setListener(mRecentsClickListener,mRecentsPreloadOnTouchListener, mHomeSearchActionListener);
         updateSearchPanel();
     }
 
@@ -2590,6 +2586,7 @@ public class PhoneStatusBar extends BaseStatusBar {
 
         makeStatusBarView();
         repositionNavigationBar();
+        mNavigationBarView.updateResources();
 
         // recreate StatusBarIconViews.
         for (int i = 0; i < nIcons; i++) {
@@ -2743,7 +2740,7 @@ public class PhoneStatusBar extends BaseStatusBar {
     @Override
     protected boolean shouldDisableNavbarGestures() {
         return !isDeviceProvisioned()
-                || mExpandedVisible
+                || mExpandedVisible || NavigationBarView.getEditMode()
                 || (mDisabled & StatusBarManager.DISABLE_SEARCH) != 0;
     }
 
