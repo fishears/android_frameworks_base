@@ -41,18 +41,10 @@ import java.io.IOException;
 
 public class FChargeTile extends QuickSettingsTile {
 
-    //public static QuickSettingsTile mInstance;
-
     public static final String FAST_CHARGE_DIR = "/sys/kernel/fast_charge";
     public static final String FAST_CHARGE_FILE = "force_fast_charge";
 
     protected boolean enabled = false;
-
-    //public static QuickSettingsTile getInstance(Context context, LayoutInflater inflater,
-    //        QuickSettingsContainerView container, final QuickSettingsController qsc, Handler handler) {
-    //    if (mInstance == null) mInstance = new FChargeTile(context, inflater, container, qsc, handler);
-    //    return mInstance;
-    //}
 
     public FChargeTile(Context context, LayoutInflater inflater,
             QuickSettingsContainerView container,
@@ -109,7 +101,6 @@ public class FChargeTile extends QuickSettingsTile {
     }
 
     private void updateTileState() {
-        //enabled = isFastChargeOn();
         String label = mContext.getString(R.string.quick_settings_fcharge);
 
         if(!isFastChargeOn()) {
