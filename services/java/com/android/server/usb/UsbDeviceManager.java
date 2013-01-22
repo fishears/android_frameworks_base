@@ -16,9 +16,9 @@
 
 package com.android.server.usb;
 
+import android.app.PendingIntent;
 import android.app.Notification;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.ContentResolver;
@@ -30,11 +30,15 @@ import android.content.res.Resources;
 import android.database.ContentObserver;
 import android.hardware.usb.UsbAccessory;
 import android.hardware.usb.UsbManager;
+import android.net.Uri;
+import android.os.Binder;
+import android.os.Bundle;
 import android.os.FileUtils;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
+import android.os.Parcelable;
 import android.os.ParcelFileDescriptor;
 import android.os.Process;
 import android.os.SystemClock;
@@ -53,6 +57,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -102,7 +107,6 @@ public class UsbDeviceManager {
     private boolean mBootCompleted;
 
     private final Object mLock = new Object();
-
     private final Context mContext;
     private final ContentResolver mContentResolver;
     // @GuardedBy("mLock")
@@ -329,7 +333,6 @@ public class UsbDeviceManager {
                 mHandler.obtainMessage(MSG_USER_SWITCHED, userId, 0).sendToTarget();
             }
         };
-
         public UsbHandler(Looper looper) {
             super(looper);
             try {
@@ -377,7 +380,6 @@ public class UsbDeviceManager {
                             }
                         }
                 );
-
                 mContentResolver.registerContentObserver(
                         Settings.Secure.getUriFor(Settings.Secure.ADB_PORT),
                                 false, new AdbSettingsObserver());
@@ -680,10 +682,10 @@ public class UsbDeviceManager {
                     id = com.android.internal.R.string.usb_mtp_notification_title;
                 } else if (containsFunction(mCurrentFunctions, UsbManager.USB_FUNCTION_PTP)) {
                     id = com.android.internal.R.string.usb_ptp_notification_title;
-                } else if (containsFunction(mCurrentFunctions,
-                        UsbManager.USB_FUNCTION_MASS_STORAGE)) {
-                    id = com.android.internal.R.string.usb_cd_installer_notification_title;
-                } else if (containsFunction(mCurrentFunctions, UsbManager.USB_FUNCTION_ACCESSORY)) {
+                } /* else if (containsFunction(mCurrentFunctions,
+                     UsbManager.USB_FUNCTION_MASS_STORAGE)) { // Disable this as it causes double USB settings menues when in UMS mode.
+                     id = com.android.internal.R.string.usb_cd_installer_notification_title; 
+                     } */ else if (containsFunction(mCurrentFunctions, UsbManager.USB_FUNCTION_ACCESSORY)) {
                     id = com.android.internal.R.string.usb_accessory_notification_title;
                 } else {
                     // There is a different notification for USB tethering so we don't need one here
@@ -885,9 +887,6 @@ public class UsbDeviceManager {
     public void dump(FileDescriptor fd, PrintWriter pw) {
         if (mHandler != null) {
             mHandler.dump(fd, pw);
-        }
-        if (mDebuggingManager != null) {
-            mDebuggingManager.dump(fd, pw);
         }
     }
 
