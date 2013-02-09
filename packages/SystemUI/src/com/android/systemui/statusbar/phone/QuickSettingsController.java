@@ -105,8 +105,8 @@ public class QuickSettingsController {
     public static final String TILE_PROFILE = "toggleProfile";
     public static final String TILE_NFC = "toggleNfc";
     public static final String TILE_USBTETHER = "toggleUsbTether";
-	public static final String TILE_FCHARGE = "toggleFCharge";
-	public static final String TILE_QUIETHOURS = "toggleQuietHours";
+    public static final String TILE_FCHARGE = "toggleFCharge";
+    public static final String TILE_QUIETHOURS = "toggleQuietHours";
 
     private static final String TILE_DELIMITER = "|";
     private static ArrayList<String> TILES_DEFAULT = new ArrayList<String>();
@@ -261,8 +261,7 @@ public class QuickSettingsController {
                 // Not available yet
             } else if (tile.equals(TILE_FCHARGE)) {
                 mQuickSettings.add(FCHARGE_TILE);
-			}
-			} else if (tile.equals(TILE_QUIETHOURS)) {
+	    } else if (tile.equals(TILE_QUIETHOURS)) {
                 mQuickSettings.add(QUIET_HOURS_TILE);
             }
         }
