@@ -44,6 +44,7 @@ import com.android.systemui.quicksettings.BluetoothTile;
 import com.android.systemui.quicksettings.BrightnessTile;
 import com.android.systemui.quicksettings.BugReportTile;
 import com.android.systemui.quicksettings.NfcTile;
+import com.android.systemui.quicksettings.QuietHoursTile;
 import com.android.systemui.quicksettings.ScreenTimeoutTile;
 import com.android.systemui.quicksettings.TorchTile;
 import com.android.systemui.quicksettings.GPSTile;
@@ -105,6 +106,7 @@ public class QuickSettingsController {
     public static final String TILE_NFC = "toggleNfc";
     public static final String TILE_USBTETHER = "toggleUsbTether";
 	public static final String TILE_FCHARGE = "toggleFCharge";
+	public static final String TILE_QUIETHOURS = "toggleQuietHours";
 
     private static final String TILE_DELIMITER = "|";
     private static ArrayList<String> TILES_DEFAULT = new ArrayList<String>();
@@ -159,6 +161,7 @@ public class QuickSettingsController {
     public static final int SCREENTIMEOUT_TILE = 22;
     public static final int USBTETHER_TILE = 23;
 	public static final int FCHARGE_TILE = 24;
+	public static final int QUIET_HOURS_TILE = 25;
     public static final int USER_TILE = 99;
     private InputMethodTile IMETile;
 
@@ -259,6 +262,9 @@ public class QuickSettingsController {
             } else if (tile.equals(TILE_FCHARGE)) {
                 mQuickSettings.add(FCHARGE_TILE);
 			}
+			} else if (tile.equals(TILE_QUIETHOURS)) {
+                mQuickSettings.add(QUIET_HOURS_TILE);
+            }
         }
 
         // Load the dynamic tiles
@@ -275,6 +281,9 @@ public class QuickSettingsController {
         }
         if (Settings.System.getInt(resolver, Settings.System.QS_DYNAMIC_IME, 1) == 1) {
             mQuickSettings.add(IME_TILE);
+        }
+        if (deviceSupportsUsbTether() && Settings.System.getInt(resolver, Settings.System.QS_DYNAMIC_USBTETHER, 1) == 1) {
+            mQuickSettings.add(USBTETHER_TILE);
         }
     }
 
@@ -366,6 +375,11 @@ public class QuickSettingsController {
 
     boolean deviceSupportsBluetooth() {
         return (BluetoothAdapter.getDefaultAdapter() != null);
+    }
+
+    boolean deviceSupportsUsbTether() {
+        ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return (cm.getTetherableUsbRegexs().length != 0);
     }
 
     boolean systemProfilesEnabled(ContentResolver resolver) {
@@ -462,6 +476,9 @@ public class QuickSettingsController {
                 break;
 			case FCHARGE_TILE:
                 qs = new FChargeTile(mContext, inflater, mContainerView, this, mHandler);
+                break;
+            case QUIET_HOURS_TILE:
+                qs = new QuietHoursTile(mContext, inflater, mContainerView, this);
                 break;
             }
             if (qs != null) {
