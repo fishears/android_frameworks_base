@@ -1776,7 +1776,7 @@ public final class Settings {
         public static final String MODE_RINGER_STREAMS_AFFECTED = "mode_ringer_streams_affected";
 
          /**
-          * Ability to enable/disable Daul pane prefs.
+          * Ability to enable/disable Dual pane prefs.
           */
         public static final String DUAL_PANE_PREFS = "dual_pane_prefs";
 
@@ -2571,14 +2571,12 @@ public final class Settings {
          */
         public static final String EXPANDED_HIDE_SCROLLBAR = "expanded_hide_scrollbar";
 
-
         /**
          * Haptic feedback in power widget
          *
          * @hide
          */
         public static final String EXPANDED_HAPTIC_FEEDBACK = "expanded_haptic_feedback";
-
 
         /**
          * Widget Buttons to Use
@@ -2612,7 +2610,6 @@ public final class Settings {
         * @hide
         */
         public static final String EXPANDED_NETWORK_MODE = "expanded_network_mode";
-
 
         /**
         * Notification Power Widget - Custom Screen Timeout
@@ -2802,8 +2799,8 @@ public final class Settings {
          */
         public static final String RECENTS_RAM_BAR_ACTIVE_APPS_COLOR = "recents_ram_bar_active_apps_color";
 
-        /**
-         * Statusbar State
+         /**
+         * Expanded desktop on/off state
          * @hide
          */
         public static final String EXPANDED_DESKTOP_STATE = "expanded_desktop_state";
@@ -2813,6 +2810,12 @@ public final class Settings {
         * @hide
         */
         public static final String FCHARGE_ENABLED = "fcharge_enabled";
+
+        /**
+         * Expanded desktop style (with status bar or without status bar)
+         * @hide
+         */
+        public static final String EXPANDED_DESKTOP_STYLE = "expanded_desktop_style";
 
         /**
          * Whether to use a separate delay for "slide to unlock" and security
@@ -2926,7 +2929,6 @@ public final class Settings {
          */
         public static final String LOCKSCREEN_BACKGROUND = "lockscreen_background";
 
-
          /**
          * Action for long-pressing back button on lock screen
          * @hide
@@ -3005,7 +3007,6 @@ public final class Settings {
          */
         public static final String POWER_MENU_SOUND_ENABLED = "power_menu_silent_enabled";
 
-
         /**
          * Whether to unlock the screen with the home key.  The value is boolean (1 or 0).
          * @hide
@@ -3065,6 +3066,7 @@ public final class Settings {
           * @hide
           */
          public static final String KEY_ASSIST_ACTION = "key_assist_action";
+
         /**
          * Weather to minimize lockscreen challenge on screen turned on
          * @hide
@@ -3436,8 +3438,6 @@ public final class Settings {
         @Deprecated
         public static final String WIFI_WATCHDOG_PING_TIMEOUT_MS =
             Secure.WIFI_WATCHDOG_PING_TIMEOUT_MS;
-
-
     }
 
     /**
@@ -4889,6 +4889,7 @@ public final class Settings {
          */
         public static final int INCALL_POWER_BUTTON_BEHAVIOR_DEFAULT =
                 INCALL_POWER_BUTTON_BEHAVIOR_SCREEN_OFF;
+
         /**
          * What happens when the user presses the Home button when the
          * phone is ringing.<br/>
@@ -5714,7 +5715,6 @@ public final class Settings {
         * @hide
         */
        public static final String WIFI_COUNTRY_CODE = "wifi_country_code";
-
 
        /**
         * The interval in milliseconds to issue wake up scans when wifi needs
