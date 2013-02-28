@@ -3078,6 +3078,12 @@ public final class Settings {
  	 */
  	 public static final String HIGH_END_GFX_ENABLED = "high_end_gfx_enabled";
 
+         /**
+         * Is current activity launcher or not
+         * @hide
+         */
+         public static final String IS_HOME = "is_home";
+ 	 
         /**
          * Whether the lockscreen vibrate should be enabled.
          * @hide
@@ -6349,7 +6355,7 @@ public final class Settings {
          * @hide
          */
         public static final String AUDIO_SAFE_VOLUME_STATE = "audio_safe_volume_state";
-
+        
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
