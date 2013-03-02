@@ -83,6 +83,7 @@ import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -1150,6 +1151,9 @@ public class PhoneStatusBar extends BaseStatusBar {
             mPile.removeView(remove);
         }
 
+        //set alpha for notification pile before it is added
+        setNotificationAlphaHelper();
+        
         for (int i=0; i<toShow.size(); i++) {
             View v = toShow.get(i);
             if (v.getParent() == null) {
@@ -1585,7 +1589,18 @@ public class PhoneStatusBar extends BaseStatusBar {
         });
         return a;
     }
-
+    public Animator setVisibilityWhenDone(
+	    final Animator a, final View v, final int vis, final View v2, final int vis2) {
+	a.addListener(new AnimatorListenerAdapter() {
+	    @Override
+	    public void onAnimationEnd(Animator animation) {
+		v.setVisibility(vis);
+		v2.setVisibility(vis2);
+	    }
+	});
+	return a;
+    }
+    
     public Animator interpolator(TimeInterpolator ti, Animator a) {
         a.setInterpolator(ti);
         return a;
@@ -2947,9 +2962,12 @@ public class PhoneStatusBar extends BaseStatusBar {
 
         @Override
         public void onChange(boolean selfChange) {
+	    recreateStatusBar();
+	    setNotificationWallpaperHelper();
+	    setNotificationAlphaHelper();
+	    
             if (mSettingsContainer != null) {
                 mQS.updateResources();
-                setNotificationWallpaperHelper();
             }
         }
 
@@ -3004,6 +3022,9 @@ public class PhoneStatusBar extends BaseStatusBar {
             }
          background.setAlpha((int) ((1-wallpaperAlpha) * 255));
         }
+    }
+    
+    private void setNotificationAlphaHelper() {
 	float notifAlpha = Settings.System.getFloat(mContext.getContentResolver(), Settings.System.NOTIF_ALPHA, 0.0f);
         if (mPile != null) {
             int N = mNotificationData.size();
