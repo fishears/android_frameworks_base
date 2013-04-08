@@ -10610,15 +10610,15 @@ public final class ActivityManagerService extends ActivityManagerNative
                 Process.PROC_SPACE_TERM|Process.PROC_OUT_LONG
             };
             long[] longOut = new long[1];
-            Process.readProcFile("/sys/kernel/mm/ksm/pages_shared",
+            Process.readProcFile("/sys/kernel/mm/uksm/pages_shared",
                     SINGLE_LONG_FORMAT, null, longOut, null);
             long shared = longOut[0] * ProcessList.PAGE_SIZE / 1024;
             longOut[0] = 0;
-            Process.readProcFile("/sys/kernel/mm/ksm/pages_sharing",
+            Process.readProcFile("/sys/kernel/mm/uksm/pages_sharing",
                     SINGLE_LONG_FORMAT, null, longOut, null);
             long sharing = longOut[0] * ProcessList.PAGE_SIZE / 1024;
             longOut[0] = 0;
-            Process.readProcFile("/sys/kernel/mm/ksm/pages_unshared",
+            Process.readProcFile("/sys/kernel/mm/uksm/pages_unshared",
                     SINGLE_LONG_FORMAT, null, longOut, null);
             long unshared = longOut[0] * ProcessList.PAGE_SIZE / 1024;
             longOut[0] = 0;
