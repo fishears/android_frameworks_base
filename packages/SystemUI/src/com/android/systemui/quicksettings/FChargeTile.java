@@ -46,14 +46,13 @@ public class FChargeTile extends QuickSettingsTile {
 
     protected boolean enabled = false;
 
-    public FChargeTile(Context context, LayoutInflater inflater,
-            QuickSettingsContainerView container,
+    public FChargeTile(Context context, 
             QuickSettingsController qsc, Handler handler) {
-        super(context, inflater, container, qsc);
+        super(context, qsc);
 
         updateTileState();
 
-        mOnClick = new OnClickListener() {
+        mOnClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
@@ -73,7 +72,7 @@ public class FChargeTile extends QuickSettingsTile {
             }
         };
 
-        mOnLongClick = new OnLongClickListener() {
+        mOnLongClick = new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 return true;

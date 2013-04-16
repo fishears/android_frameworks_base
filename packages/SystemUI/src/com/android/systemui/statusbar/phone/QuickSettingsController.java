@@ -242,7 +242,7 @@ public class QuickSettingsController {
             } else if (tile.equals(TILE_QUIETHOURS)) {
                 qs = new QuietHoursTile(mContext, this);
             } else if (tile.equals(TILE_FCHARGE)) {
-                qs = new FChargeTile(mContext, inflater, this, mHandler);
+                qs = new FChargeTile(mContext, this, mHandler);
             } else if (tile.equals(TILE_VOLUME)) {
                 qs = new VolumeTile(mContext, this, mHandler);
             } else if (tile.equals(TILE_EXPANDEDDESKTOP)) {
