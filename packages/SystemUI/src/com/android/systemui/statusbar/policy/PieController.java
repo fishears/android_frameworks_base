@@ -16,10 +16,7 @@
  */
 package com.android.systemui.statusbar.policy;
 
-import android.app.ActivityManager.RunningAppProcessInfo;
-import android.app.ActivityManagerNative;
 import android.app.ActivityOptions;
-import android.app.IActivityManager;
 import android.app.SearchManager;
 import android.app.StatusBarManager;
 import android.content.ActivityNotFoundException;
@@ -29,7 +26,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.database.ContentObserver;
 import android.graphics.Point;
@@ -59,9 +55,7 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.android.internal.util.cm.DevUtils;
 import com.android.systemui.R;
 import com.android.systemui.statusbar.BaseStatusBar;
 import com.android.systemui.statusbar.NavigationButtons;
@@ -73,8 +67,6 @@ import com.android.systemui.statusbar.pie.PieLayout.PieSlice;
 import com.android.systemui.statusbar.pie.PieSliceContainer;
 import com.android.systemui.statusbar.pie.PieSysInfo;
 
-import java.util.List;
-
 /**
  * Controller class for the default pie control.
  * <p>
@@ -82,7 +74,7 @@ import java.util.List;
  * executing the actions that can be triggered by the pie control.
  */
 public class PieController implements BaseStatusBar.NavigationBarCallback,
-        PieLayout.OnSnapListener, PieItem.PieOnClickListener, PieItem.PieOnLongClickListener {
+        PieLayout.OnSnapListener, PieItem.PieOnClickListener {
     public static final String TAG = "PieController";
     public static final boolean DEBUG = false;
 
@@ -153,7 +145,6 @@ public class PieController implements BaseStatusBar.NavigationBarCallback,
         public static float sDistance;
         private float initialX = 0;
         private float initialY = 0;
-        private float gracePeriod = 0;
 
         private Tracker(Position position) {
             this.position = position;
@@ -162,14 +153,6 @@ public class PieController implements BaseStatusBar.NavigationBarCallback,
         public void start(MotionEvent event) {
             initialX = event.getX();
             initialY = event.getY();
-            switch (position) {
-                case LEFT:
-                    gracePeriod = initialX + sDistance / 3.0f;
-                    break;
-                case RIGHT:
-                    gracePeriod = initialX - sDistance / 3.0f;
-                    break;
-            }
             active = true;
         }
 
@@ -185,9 +168,6 @@ public class PieController implements BaseStatusBar.NavigationBarCallback,
             boolean loaded = false;
             switch (position) {
                 case LEFT:
-                    if (x < gracePeriod) {
-                        initialY = y;
-                    }
                     if (initialY - y < sDistance && y - initialY < sDistance) {
                         if (x - initialX <= sDistance) {
                             return false;
@@ -212,9 +192,6 @@ public class PieController implements BaseStatusBar.NavigationBarCallback,
                     }
                     break;
                 case RIGHT:
-                    if (x > gracePeriod) {
-                        initialY = y;
-                    }
                     if (initialY - y < sDistance && y - initialY < sDistance) {
                         if (initialX - x <= sDistance) {
                             return false;
@@ -278,9 +255,7 @@ public class PieController implements BaseStatusBar.NavigationBarCallback,
         void observe() {
             ContentResolver resolver = mContext.getContentResolver();
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.PIE_SEARCH), false, this);
-            resolver.registerContentObserver(Settings.Secure.getUriFor(
-                    Settings.Secure.KILL_APP_LONGPRESS_BACK), false, this);
+                    Settings.System.NAV_BUTTONS), false, this);
         }
 
         @Override
@@ -382,8 +357,6 @@ public class PieController implements BaseStatusBar.NavigationBarCallback,
 
     private void setupNavigationItems() {
         int minimumImageSize = (int)mContext.getResources().getDimension(R.dimen.pie_item_size);
-        boolean killAppLongPress = Settings.Secure.getInt(mContext.getContentResolver(),
-                Settings.Secure.KILL_APP_LONGPRESS_BACK, 0) == 1;
         ButtonInfo[] buttons = NavigationButtons.loadButtonMap(mContext);
 
         mNavigationSlice.clear();
@@ -397,16 +370,13 @@ public class PieController implements BaseStatusBar.NavigationBarCallback,
                     // search light has a width of 6 to take the complete space that normally
                     // BACK HOME RECENT would occupy
                     mSearchLight = constructItem(6, SEARCHLIGHT,
-                            SEARCHLIGHT.portResource, minimumImageSize, false);
+                            SEARCHLIGHT.portResource, minimumImageSize);
                     mNavigationSlice.addItem(mSearchLight);
                 }
 
-                boolean canLongPress = bi == NavigationButtons.HOME
-                        || (bi == NavigationButtons.BACK && killAppLongPress);
                 boolean isSmall = NavigationButtons.IS_SLOT_SMALL[i];
                 mNavigationSlice.addItem(constructItem(isSmall ? 1 : 2, bi,
-                        isSmall ? bi.sideResource : bi.portResource, minimumImageSize,
-                        canLongPress));
+                        isSmall ? bi.sideResource : bi.portResource, minimumImageSize));
             }
         }
         mMenuButton = findItem(NavigationButtons.CONDITIONAL_MENU);
@@ -415,19 +385,15 @@ public class PieController implements BaseStatusBar.NavigationBarCallback,
         setMenuVisibility(mShowMenu);
     }
 
-    private PieItem constructItem(int width, ButtonInfo type, int image, int minimumImageSize,
-            boolean canLongPress) {
+    private PieItem constructItem(int width, ButtonInfo type, int image, int minimumImageSize) {
         ImageView view = new ImageView(mContext);
         view.setImageResource(image);
         view.setMinimumWidth(minimumImageSize);
         view.setMinimumHeight(minimumImageSize);
         LayoutParams lp = new LayoutParams(minimumImageSize, minimumImageSize);
         view.setLayoutParams(lp);
-        PieItem item = new PieItem(mContext, mPieContainer, 0, width, type, view);
+        PieItem item = new PieItem(mContext, mPieContainer, width, type, view);
         item.setOnClickListener(this);
-        if (canLongPress) {
-            item.setOnLongClickListener(this);
-        }
         return item;
     }
 
@@ -580,22 +546,6 @@ public class PieController implements BaseStatusBar.NavigationBarCallback,
                 }
             } else if (bi == SEARCHLIGHT) {
                 launchAssistAction(true);
-            }
-        }
-    }
-
-    @Override
-    public void onLongClick(PieItem item) {
-        ButtonInfo bi = (ButtonInfo) item.tag;
-        mPieContainer.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
-        mPieContainer.playSoundEffect(SoundEffectConstants.CLICK);
-
-        if (bi == NavigationButtons.HOME) {
-            launchAssistAction(false);
-        } else if (bi == NavigationButtons.BACK) {
-            if (DevUtils.killForegroundApplication(mContext)) {
-                Toast.makeText(mContext, com.android.internal.R.string.app_killed_message,
-                        Toast.LENGTH_SHORT).show();
             }
         }
     }
